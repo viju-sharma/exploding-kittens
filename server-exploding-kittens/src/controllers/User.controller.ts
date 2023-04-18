@@ -51,12 +51,13 @@ export const login = async (
     const { username, password }: IUser = req.body;
     /**
      * check if Acc already exist with the username
-     */
-    const user = await User.findOne({ username });
-    if (!user) return next(new HttpException(404, "Username does not exists"));
-
-    // check if password is valid
-    const isValidPassword = await user.isValidPassword(password);
+    */
+   const user = await User.findOne({ username }).select('password');
+   if (!user) return next(new HttpException(404, "Username does not exists"));
+   
+   // check if password is valid
+   console.log(password)
+   const isValidPassword = await user.isValidPassword(password);
     if (!isValidPassword) {
       return next(new HttpException(402, "Incorrect Password"));
     }

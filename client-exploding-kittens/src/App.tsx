@@ -8,6 +8,7 @@ import { privateRequest } from "./utils/requestMethods";
 import { LoginSuccessRes } from "./interfaces/LoginSuccess.interface";
 import { login } from "./features/auth.slice";
 import Home from "./pages/Home/Home";
+import LeaderBoard from "./pages/LeaderBoard/LeaderBoard";
 // import { userId } from "./features/auth.slice";
 function App() {
   const dispatch = useAppDispatch();
@@ -61,6 +62,7 @@ function App() {
         </Route>
         <Route element={<PrivateWrapper auth={{ userId }} />}>
           <Route path="/" element={<Home />} />
+          <Route path="/leaderboard" element={<LeaderBoard />} />
         </Route>
       </Routes>
     </div>
