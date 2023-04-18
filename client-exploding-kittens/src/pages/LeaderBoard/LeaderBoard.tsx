@@ -4,11 +4,14 @@ import Navbar from "../../components/Navbar";
 import { LeaderBoardUser } from "../../interfaces/LeaderBoard.interface";
 import { privateRequest } from "../../utils/requestMethods";
 import { toast } from "react-toastify";
+import Loading from "../../components/Loading";
 
 const LeaderBoard = () => {
   type LeaderBoardArr = LeaderBoardUser[];
 
   const [scores, setScores] = useState([] as LeaderBoardArr);
+  const [loading, setLoading] = useState(true);
+
   const getLeaderBoard = async () => {
     try {
       const response = await privateRequest.get("/api/game/leaderboard");
@@ -16,6 +19,8 @@ const LeaderBoard = () => {
       setScores(scoresList);
     } catch (error: any) {
       toast.error(error?.response?.data?.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -23,6 +28,7 @@ const LeaderBoard = () => {
     getLeaderBoard();
   }, []);
 
+  if (loading) return <Loading />;
   return (
     <div>
       <Navbar />

@@ -9,6 +9,7 @@ import { LoginSuccessRes } from "./interfaces/LoginSuccess.interface";
 import { login } from "./features/auth.slice";
 import Home from "./pages/Home/Home";
 import LeaderBoard from "./pages/LeaderBoard/LeaderBoard";
+import Loading from "./components/Loading";
 // import { userId } from "./features/auth.slice";
 function App() {
   const dispatch = useAppDispatch();
@@ -51,7 +52,7 @@ function App() {
     return !userId ? <Outlet /> : <Navigate to={"/"} />;
   };
 
-  if (loading) return <div>Loading</div>;
+  if (loading) return <Loading />;
 
   return (
     <div className="App">

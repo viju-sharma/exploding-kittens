@@ -18,10 +18,11 @@ const Navbar = () => {
             Home
           </button>
         </Link>
-        <button className="text-grey-dark border-b-2 border-transparent uppercase tracking-wide font-bold text-xs py-3 mr-8">
-          Leader Board
-        </button>
-
+        <Link to={"/leaderboard"}>
+          <button className="text-grey-dark border-b-2 border-transparent uppercase tracking-wide font-bold text-xs py-3 mr-8">
+            Leader Board
+          </button>
+        </Link>
         <button
           onClick={handleLogout}
           className="no-underline text-grey-dark border-b-2 border-transparent uppercase tracking-wide font-bold text-xs py-3 ml-auto"
