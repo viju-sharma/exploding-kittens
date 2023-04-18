@@ -4,20 +4,29 @@ import { IUser } from '../utils/interfaces/database.interface';
 
 const UserSchema = new Schema(
     {
-        name: {
+        username: {
             type: String,
             required: true,
+            unique:true,
+            trim:true,
         },
         email: {
             type: String,
             required: true,
             unique: true,
             trim: true,
+            lowercase: true
         },
         password: {
             type: String,
             required: true,
         },
+        score : {
+            type : Number,
+            min : 0,
+            default : 0,
+            required : true
+        }
         
     },
     { timestamps: true }

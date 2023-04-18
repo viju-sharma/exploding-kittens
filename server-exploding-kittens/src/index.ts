@@ -5,6 +5,9 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import logger from "morgan";
 import mongoose from "mongoose";
+import errorMiddleware from "./middlewares/error.middleware";
+import { router as userRoutes } from "./routes/user.routes";
+import { router as gameRoutes } from "./routes/game.routes";
 /**
  * to validate all env requirements
  */
@@ -22,17 +25,22 @@ app.use(cors<Request>());
 app.use(cookieParser());
 app.use(logger("dev"));
 
+app.use("/api/user", userRoutes);
+app.use("/api/game", gameRoutes);
 
-
+app.use(errorMiddleware);
 /**
  * Databse connection
  */
 
-mongoose.connect(process.env.MONGO_URL as string, {}).then(()=>{
-    console.log("Database Connected")
-    app.listen(port, ()=>{
-        console.log(`Server is running on port ${port}`)
-    })
-}).catch((error)=>{
-    console.log(error)
-})
+mongoose
+  .connect(process.env.MONGO_URL as string, {})
+  .then(() => {
+    console.log("Database Connected");
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+  })
+  .catch((error) => {
+    console.log(error);
+  });
