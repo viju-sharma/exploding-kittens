@@ -17,7 +17,7 @@ import { router as gameRoutes } from "./routes/game.routes";
 validateEnv();
 
 // redis setup
-export const redisClient = new Redis();
+export const redisClient = new Redis(process.env.REDIS_URL || "");
 
 const app: Application = express();
 const port: Number = Number(process.env.PORT);

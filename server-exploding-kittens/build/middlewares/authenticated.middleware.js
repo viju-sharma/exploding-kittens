@@ -40,7 +40,7 @@ function authenticatedMiddleware(req, res, next) {
                 yield __1.redisClient.set(`user-${payload.id}`, JSON.stringify(user), 'EX', 1000);
             }
             if (!user) {
-                return next(new http_exception_1.default(401, "Unauthorised"));
+                return next(new http_exception_1.default(401, "User Does Not Exists"));
             }
             req.user = user;
             return next();

@@ -15,9 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.gameWon = exports.userScore = exports.leaderBoardList = void 0;
 const http_exception_1 = __importDefault(require("../utils/exceptions/http.exception"));
 const User_model_1 = __importDefault(require("../models/User.model"));
+const __1 = require("..");
 const leaderBoardList = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const cachedLeaderboard = yield __1.redisClient.get("leaderBoard");
+        if (cachedLeaderboard)
+            return res.status(200).json(JSON.parse(cachedLeaderboard));
         const users = yield User_model_1.default.find().sort({ score: -1 });
+        yield __1.redisClient.set('leaderBoard', JSON.stringify(users), 'EX', 10);
         return res.status(200).json(users);
     }
     catch (error) {
@@ -26,13 +31,8 @@ const leaderBoardList = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
 });
 exports.leaderBoardList = leaderBoardList;
 const userScore = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a._id;
     try {
-        const user = yield User_model_1.default.findById(userId);
-        if (!user)
-            return next(new http_exception_1.default(404, "User not found"));
-        res.status(200).json(user);
+        res.status(200).json(req.user);
     }
     catch (error) {
         return next(new http_exception_1.default(500, "Server Error"));
@@ -40,10 +40,13 @@ const userScore = (req, res, next) => __awaiter(void 0, void 0, void 0, function
 });
 exports.userScore = userScore;
 const gameWon = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b;
-    const userId = (_b = req.user) === null || _b === void 0 ? void 0 : _b._id;
+    var _a;
+    const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a._id;
     try {
-        yield User_model_1.default.findOneAndUpdate({ _id: userId }, { $inc: { score: 1 } });
+        const user = yield User_model_1.default.findOneAndUpdate({ _id: userId }, { $inc: { score: 1 } }, {
+            new: true
+        });
+        yield __1.redisClient.set(`user-${userId}`, JSON.stringify(user), 'EX', 1000);
         res.status(200).send({ message: "Score Updated" });
     }
     catch (error) {
