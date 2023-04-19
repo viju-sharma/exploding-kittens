@@ -13,7 +13,6 @@ Overall, this project aims to provide a fun and engaging gaming experience for u
 - [Getting Started](#getting-started)
 - [Folder Structure](#folder-structure)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Technologies Used
 
@@ -180,7 +179,3 @@ npm run dev
 ## Contributing
 
 If you find any issues or bugs, please open an issue or submit a pull request.
-
-## License
-
-This project is licensed under the MIT License.
