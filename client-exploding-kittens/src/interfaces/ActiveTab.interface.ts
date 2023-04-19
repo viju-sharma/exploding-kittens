@@ -1,1 +1,1 @@
-export type ActiveTab  =  "home" | "leader-board"
+export type ActiveTab = "home" | "leader-board" | "game";

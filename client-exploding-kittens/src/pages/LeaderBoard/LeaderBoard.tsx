@@ -31,7 +31,7 @@ const LeaderBoard = () => {
   if (loading) return <Loading />;
   return (
     <div>
-      <Navbar />
+      <Navbar activeTab="leader-board" />
       <Table scores={scores} />
     </div>
   );

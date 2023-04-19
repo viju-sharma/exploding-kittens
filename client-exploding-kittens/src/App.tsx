@@ -10,7 +10,7 @@ import { login } from "./features/auth.slice";
 import Home from "./pages/Home/Home";
 import LeaderBoard from "./pages/LeaderBoard/LeaderBoard";
 import Loading from "./components/Loading";
-// import { userId } from "./features/auth.slice";
+import Game from "./pages/Game/Game";
 function App() {
   const dispatch = useAppDispatch();
   const { id: userId } = useAppSelector((state) => state.auth);
@@ -63,6 +63,7 @@ function App() {
         </Route>
         <Route element={<PrivateWrapper auth={{ userId }} />}>
           <Route path="/" element={<Home />} />
+          <Route path="/game" element={<Game />} />
           <Route path="/leaderboard" element={<LeaderBoard />} />
         </Route>
       </Routes>

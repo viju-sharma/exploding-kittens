@@ -3,29 +3,57 @@ import { ActiveTab } from "../interfaces/ActiveTab.interface";
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../features/hooks";
 import { logout } from "../features/auth.slice";
+import classes from "./Navbar.module.css";
 
-const Navbar = () => {
-  const [active, setActive] = useState<ActiveTab>("home");
+type NavbarProps = {
+  activeTab: ActiveTab;
+};
+
+const Navbar = ({ activeTab }: NavbarProps) => {
+  const [active, setActive] = useState<ActiveTab>(activeTab);
   const dispatch = useAppDispatch();
   const handleLogout = () => {
     dispatch(logout());
   };
   return (
-    <nav className="bg-white px-8 pt-2 shadow-md">
-      <div className="-mb-px flex justify-center">
+    <nav className="bg-white px-8  pt-2 py-1 shadow-md">
+      <div className="-mb-px flex justify-center items-center py-2">
         <Link to={"/"}>
-          <button className="text-teal-dark border-b-2 border-teal-dark uppercase tracking-wide font-bold text-xs py-3 mr-8">
+          <button
+            className={[
+              classes.navBtn,
+              classes.hoverEffect,
+              `${active === "home" && "scale-110"}`,
+            ].join(" ")}
+          >
             Home
           </button>
         </Link>
         <Link to={"/leaderboard"}>
-          <button className="text-grey-dark border-b-2 border-transparent uppercase tracking-wide font-bold text-xs py-3 mr-8">
+          <button
+            className={[
+              classes.navBtn,
+              classes.hoverEffect,
+              `${active === "leader-board" && "scale-110"}`,
+            ].join(" ")}
+          >
             Leader Board
+          </button>
+        </Link>
+        <Link to={"/game"}>
+          <button
+            className={[
+              classes.navBtn,
+              classes.hoverEffect,
+              `${active === "game" && "scale-110"}`,
+            ].join(" ")}
+          >
+            Game
           </button>
         </Link>
         <button
           onClick={handleLogout}
-          className="no-underline text-grey-dark border-b-2 border-transparent uppercase tracking-wide font-bold text-xs py-3 ml-auto"
+          className={[classes.navBtn, "ml-auto"].join(" ")}
         >
           Logout
         </button>

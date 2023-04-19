@@ -19,7 +19,7 @@ const Table = ({ scores }: TableProps) => {
         {scores.map((item, index) => {
           const { _id, username, score } = item;
           return (
-            <tr>
+            <tr key={index}>
               <td scope="row" data-label="Rank">
                 {index + 1}
               </td>

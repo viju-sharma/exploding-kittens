@@ -9,8 +9,13 @@ export const privateRequest = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
   headers: {
-    get: {        // can be common or any other method
-      "Authorization": localStorage.getItem('token') || ""
-    }
-  }
+    get: {
+      // can be common or any other method
+      Authorization: localStorage.getItem("token") || "",
+    },
+    post: {
+      // can be common or any other method
+      Authorization: localStorage.getItem("token") || "",
+    },
+  },
 });

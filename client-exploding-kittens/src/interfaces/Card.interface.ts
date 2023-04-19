@@ -1,0 +1,1 @@
+export type CardTypes = "cat" | "defuse" | "suffle" | "exploding";
