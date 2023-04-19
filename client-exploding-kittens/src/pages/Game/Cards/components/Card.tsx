@@ -44,14 +44,14 @@ const cardTypes = {
   },
   defuse: {
     title: "Defuse Card",
-    image: "/cat.svg",
+    image: "/defuse.svg",
   },
   suffle: {
     title: "Suffle Card",
-    image: "/cat.svg",
+    image: "/suffle.svg",
   },
   exploding: {
     title: "Exploding Card",
-    image: "/cat.svg",
+    image: "/bomb.svg",
   },
 };

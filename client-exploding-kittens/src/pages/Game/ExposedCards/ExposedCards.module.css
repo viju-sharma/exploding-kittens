@@ -81,8 +81,15 @@
 
 .circle {
   position: absolute;
+  width: 100%;
   top: 100px;
-  left: calc(50% - 60px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle img {
+  width: 10rem;
 }
 
 .stroke {
