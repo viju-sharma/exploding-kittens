@@ -17,11 +17,21 @@ interface GameState {
   };
 }
 
+/**
+ * Get Values from local storage
+ */
+const localDeck = JSON.parse(localStorage.getItem("deck") || "[]");
+const localExposedCards = JSON.parse(
+  localStorage.getItem("exposedCards") || "[]"
+);
+const localDefuseCard = JSON.parse(localStorage.getItem("defuseCard") || "[]");
+const localLostGame = JSON.parse(localStorage.getItem("lostGame") || "[]");
+
 const initialState: GameState = {
-  deck: [],
-  exposedCards: [],
-  defuseCard: 0,
-  lostGame: false,
+  deck: localStorage.getItem("deck") ? localDeck : [],
+  exposedCards: localStorage.getItem("exposedCards") ? localExposedCards : [],
+  defuseCard: localStorage.getItem("defuseCard") ? localDefuseCard : 0,
+  lostGame: localStorage.getItem("lostGame") ? localLostGame : false,
   winGame: false,
   postWin: {
     status: "",
@@ -40,8 +50,11 @@ export const gameSlice = createSlice({
   initialState,
   reducers: {
     initializeGame: (state) => {
-      console.log("Initialed game");
-
+      localStorage.removeItem("deck");
+      localStorage.removeItem("exposedCards");
+      localStorage.removeItem("defuseCard");
+      localStorage.removeItem("lostGame");
+      
       /**
        * reset state
        */
@@ -61,8 +74,8 @@ export const gameSlice = createSlice({
       }
     },
     exposeCard: (state, action: PayloadAction<number>) => {
-      const index = action.payload
-      const card = state.deck[index] 
+      const index = action.payload;
+      const card = state.deck[index];
       switch (card) {
         case "cat":
           state.deck.splice(index, 1);
@@ -75,17 +88,17 @@ export const gameSlice = createSlice({
           break;
         case "suffle":
           state.exposedCards.push("suffle");
-          toast.dark("Deck Suffled")
+          toast.dark("Deck Suffled");
           gameSlice.caseReducers.initializeGame(state);
           break;
         case "exploding":
           state.exposedCards.push("exploding");
           if (state.defuseCard > 0) {
-            toast.dark("Defuse Card Used")
+            toast.dark("Defuse Card Used");
             state.deck.splice(index, 1);
             state.defuseCard -= 1;
           } else {
-            toast.error("Exploading Card", {theme :"colored" })
+            toast.error("Exploading Card", { theme: "colored" });
             state.lostGame = true;
           }
           break;
@@ -96,6 +109,10 @@ export const gameSlice = createSlice({
       if (state.deck.length === 0) {
         gameSlice.caseReducers.wonGame(state);
       }
+      localStorage.setItem("deck", JSON.stringify(state.deck));
+      localStorage.setItem("exposedCards", JSON.stringify(state.exposedCards));
+      localStorage.setItem("defuseCard", JSON.stringify(state.defuseCard));
+      localStorage.setItem('lostGame',JSON.stringify(state.lostGame))
     },
 
     wonGame: (state) => {

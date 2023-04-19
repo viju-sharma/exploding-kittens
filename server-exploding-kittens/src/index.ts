@@ -6,13 +6,18 @@ import cors from "cors";
 import logger from "morgan";
 import mongoose from "mongoose";
 import errorMiddleware from "./middlewares/error.middleware";
+import Redis from 'ioredis'
 import { router as userRoutes } from "./routes/user.routes";
 import { router as gameRoutes } from "./routes/game.routes";
+
 /**
  * to validate all env requirements
  */
 
 validateEnv();
+
+// redis setup
+export const redisClient = new Redis();
 
 const app: Application = express();
 const port: Number = Number(process.env.PORT);
@@ -24,6 +29,9 @@ app.use(express.json());
 app.use(cors<Request>());
 app.use(cookieParser());
 app.use(logger("dev"));
+
+
+
 
 app.use("/api/user", userRoutes);
 app.use("/api/game", gameRoutes);

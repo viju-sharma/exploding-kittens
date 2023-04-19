@@ -15,7 +15,6 @@ function App() {
   const dispatch = useAppDispatch();
   const { id: userId } = useAppSelector((state) => state.auth);
   const [loading, setLoading] = useState(true);
-
   const getUserDetails = async () => {
     try {
       const response = await privateRequest.get("/api/user/verify");
@@ -38,6 +37,7 @@ function App() {
     getUserDetails();
   }, []);
 
+  // useEffect(() => {}, []);
   interface PrivateWrapperProps {
     auth: {
       userId: string;

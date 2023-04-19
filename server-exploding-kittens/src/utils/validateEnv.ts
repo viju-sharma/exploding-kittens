@@ -8,6 +8,7 @@ function validateEnv(): void {
     MONGO_URL: str(),
     PORT: port({ default: 3000 }),
     JWT_SECRET: str(),
+    REDIS_URL : str()
   });
 }
 

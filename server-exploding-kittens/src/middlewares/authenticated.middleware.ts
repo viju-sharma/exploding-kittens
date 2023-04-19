@@ -1,12 +1,11 @@
-import {  Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import token from "../utils/token";
 import UserModel from "../models/User.model";
 import Token from "../utils/interfaces/token.interface";
 import jwt from "jsonwebtoken";
 import HttpException from "../utils/exceptions/http.exception";
 import { AuthenticatedRequest } from "../utils/interfaces/database.interface";
-
-
+import { redisClient } from "..";
 
 async function authenticatedMiddleware(
   req: AuthenticatedRequest,
@@ -28,12 +27,18 @@ async function authenticatedMiddleware(
       return next(new HttpException(401, "Unauthorised"));
     }
 
-    const user = await UserModel.findById(payload.id)
-      .select("-password")
-      .exec();
+    let user;
+    // redis stored user
+    const cachedUser = await redisClient.get(`user-${payload.id}`);
+    if (cachedUser) {
+      user = JSON.parse(cachedUser);
+    } else {
+      user = await UserModel.findById(payload.id).select("-password").exec();
+      await redisClient.set(`user-${payload.id}`, JSON.stringify(user), 'EX', 1000);
+    }
 
     if (!user) {
-      return next(new HttpException(401, "Unauthorised"));
+      return next(new HttpException(401, "User Does Not Exists"));
     }
 
     req.user = user;

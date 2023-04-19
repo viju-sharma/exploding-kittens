@@ -11,6 +11,10 @@ const Game = () => {
   const dispatch = useAppDispatch();
   const { winGame, lostGame } = useAppSelector((state) => state.game);
   useEffect(() => {
+    const localDeck = JSON.parse(localStorage.getItem("deck") || "[]");
+    if (localStorage.getItem("deck") && localDeck.length > 0) {
+      return;
+    }
     dispatch(initializeGame());
   }, []);
   useEffect(() => {
