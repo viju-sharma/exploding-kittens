@@ -22,23 +22,12 @@ export const redisClient = new Redis(process.env.REDIS_URL || "");
 const app: Application = express();
 const port: Number = Number(process.env.PORT);
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "http://localhost:4173",
-  "http://localhost:5173",
-  "https://exploding-kitten.onrender.com",
-  "https://exploding-kitten.netlify.app/"
-];
-
-const options: cors.CorsOptions = {
-  origin: allowedOrigins,
-};
 
 /**
  * Express Middlewares
  */
 app.use(express.json());
-app.use(cors<Request>(options));
+app.use(cors<Request>());
 app.use(cookieParser());
 app.use(logger("dev"));
 
